@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-row type="flex" class="row-bg">
-      <new-research v-if="roles.includes('write')" ref="newResearch" class="top-row-btn" @saved="onSearch" />
+      <new-research v-if="roles.includes('write')" ref="newResearch" class="top-row-btn" @saved="onSearch" @updated="onUpdate" />
       <el-badge :value="filtersCount" class="top-row-btn">
         <el-button type="primary" icon="el-icon-s-operation" @click="filtersShowing = !filtersShowing">Фильтры</el-button>
       </el-badge>
@@ -14,6 +14,7 @@
     </div>
 
     <el-table
+      ref="table"
       v-loading="initLoading"
       :data="researchesList"
       height="90vh"
@@ -31,7 +32,7 @@
                 <el-button :disabled="!roles.includes('delete')" icon="el-icon-delete" title="sdsd" type="danger" circle @click="deleteResearch(scope.row.id)" />
               </el-tooltip>
               <el-tooltip class="item" effect="light" content="Изменить" placement="top-start">
-                <el-button :disabled="!roles.includes('edit')" icon="el-icon-edit" type="primary" circle @click="$refs.newResearch.showEdit(scope.row)" />
+                <el-button :disabled="!roles.includes('edit')" icon="el-icon-edit" type="primary" circle @click="$refs.newResearch.showEdit({...scope.row, patient: {...scope.row.patient}, requester: {...scope.row.requester}})" />
               </el-tooltip>
               <el-tooltip class="item" effect="light" content="Сформировать результат" placement="top-start">
                 <el-button icon="el-icon-tickets" type="warning" circle @click="exportResearch(scope.row.id)" />
@@ -306,6 +307,15 @@ export default {
         a.download = 'Результат.xlsx'
         a.click()
       })
+    },
+    onUpdate(newItem) {
+      for (let index = 0; index < this.researchesList.length; index++) {
+        if (this.researchesList[index].id === newItem.id) {
+          this.researchesList[index] = newItem
+          break
+        }
+      }
+      this.$refs.table.doLayout()
     }
   }
 }
