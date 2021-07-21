@@ -1,21 +1,16 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
-    <div class="dashboard-text">roles: <span v-for="role in roles" :key="role">{{ role }}</span></div>
+    Проведено исследований
+    <bar-chart />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import BarChart from '@/views/dashboard/components/BarChart.vue'
 
 export default {
   name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name',
-      'roles'
-    ])
-  }
+  components: { BarChart }
 }
 </script>
 

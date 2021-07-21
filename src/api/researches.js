@@ -46,3 +46,10 @@ export function export_as_xlsx(id) {
     responseType: 'blob'
   })
 }
+
+export function stats(id) {
+  return request({
+    url: '/researches/stats/',
+    method: 'get'
+  })
+}
