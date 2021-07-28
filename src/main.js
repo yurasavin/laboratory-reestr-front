@@ -1,6 +1,8 @@
 import '@/icons' // icon
 import '@/permission' // permission control
 import '@/styles/index.scss' // global css
+import { Integrations } from '@sentry/tracing'
+import * as Sentry from '@sentry/vue'
 import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/ru-RU' // lang i18n
 import 'element-ui/lib/theme-chalk/index.css'
@@ -12,8 +14,21 @@ import store from './store'
 
 // set ElementUI lang
 Vue.use(ElementUI, { locale })
-// 如果想要中文版 element-ui，按如下方式声明
-// Vue.use(ElementUI)
+
+Sentry.init({
+  Vue,
+  dsn: process.env.VUE_SENTRY_DSN,
+  integrations: [
+    new Integrations.BrowserTracing({
+      routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+      tracingOrigins: ['laboratory.kvd-rostov.ru', /^\//]
+    })
+  ],
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 0.1
+})
 
 Vue.config.productionTip = false
 
