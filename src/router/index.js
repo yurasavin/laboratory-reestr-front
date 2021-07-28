@@ -63,6 +63,25 @@ export const constantRoutes = [
       component: () => import('@/views/researches/index'),
       meta: { title: 'Исследования', icon: 'table' }
     }]
+  }
+]
+
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = [
+  {
+    path: '/employees',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'Users',
+        component: () => import('@/views/users'),
+        meta: { title: 'Сотрудники', icon: 'user', roles: ['admin'] }
+      }
+    ]
   },
 
   {
@@ -74,26 +93,7 @@ export const constantRoutes = [
       component: () => import('@/views/logout'),
       meta: { title: 'Выход', icon: 'leave' }
     }]
-  }
-]
-
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
-export const asyncRoutes = [
-  // {
-  //   path: '/new-research',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: '',
-  //       name: 'ResearchForm',
-  //       component: () => import('@/views/new-research/index'),
-  //       meta: { title: 'Новое исследование', icon: 'form', roles: ['write'] }
-  //     }
-  //   ]
-  // },
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
