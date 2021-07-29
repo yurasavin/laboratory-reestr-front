@@ -1,0 +1,14 @@
+version: '3.7'
+
+networks:
+  resources:
+    external: true
+
+services:
+  front:
+    image: iriskin/laboratory-reestr-front:latest
+    ports:
+      - "80"
+    networks:
+      - resources
+    restart: always
