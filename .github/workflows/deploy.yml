@@ -25,7 +25,7 @@ jobs:
           context: .
           file: ./compose/front/Dockerfile
           push: true
-          tags: iriskin/train-hard-front:latest
+          tags: iriskin/laboratory-reestr-front:latest
 
   deploy_to_server:
     needs: push_to_registry
