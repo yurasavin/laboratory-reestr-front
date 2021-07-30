@@ -11,4 +11,10 @@ services:
       - "80"
     networks:
       - resources
+      labels:
+        - "traefik.enable=true"
+
+        - "traefik.http.routers.laboratory-django.rule=Host(`laboratory.kvd-rostov.ru`)"
+        - "traefik.http.routers.laboratory-django.entrypoints=https"
+        - "traefik.http.routers.laboratory-django.tls=true"
     restart: always
