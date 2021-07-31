@@ -214,6 +214,7 @@ export default {
   },
   created() {
     this.fetchData()
+    throw new Error('Test Sentry')
   },
   methods: {
     fetchData() {
