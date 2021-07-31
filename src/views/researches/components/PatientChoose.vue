@@ -213,7 +213,7 @@ export default {
     },
     generateYears() {
       const range = []
-      for (let year = 1900; year < 2101; year++) {
+      for (let year = 1940; year < 2101; year++) {
         range.push(year)
       }
       return range
