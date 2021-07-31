@@ -199,6 +199,10 @@ export default {
         const form = this.form
         if (valid) {
           form.birthday = `${form.birthdayYear}-${form.birthdayMonth}-${form.birthdayDay}`
+          if (!this.$moment(form.birthday, 'YYYY-MM-DD').isValid()) {
+            this.$message({ type: 'error', message: 'Введите корректную дату!' })
+            return false
+          }
         }
         this.$emit('complete', form, valid)
         this.visible = false
