@@ -171,7 +171,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { export_as_xlsx, getList, getNextList, remove } from '@/api/researches'
+import { export_as_xlsx, getList, getNextList, remove, getError } from '@/api/researches'
 import NewResearch from '@/views/researches/components/NewResearch.vue'
 
 export default {
@@ -214,6 +214,7 @@ export default {
   },
   created() {
     this.fetchData()
+    getError()
   },
   methods: {
     fetchData() {
