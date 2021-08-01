@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <button @click="throwError">Throw error</button>
     <el-row type="flex" class="row-bg">
       <new-research v-if="roles.includes('write')" ref="newResearch" class="top-row-btn" @saved="onSearch" @updated="onUpdate" />
       <el-badge :value="filtersCount" class="top-row-btn">
@@ -217,9 +216,6 @@ export default {
     this.fetchData()
   },
   methods: {
-    throwError() {
-      throw new Error('Sentry Error')
-    },
     fetchData() {
       if (this.fetchingRequest) {
         this.fetchingRequest.cancell()
