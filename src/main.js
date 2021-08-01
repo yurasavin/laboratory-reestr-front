@@ -21,7 +21,7 @@ Vue.prototype.$moment = moment
 
 Sentry.init({
   Vue,
-  dsn: process.env.VUE_SENTRY_DSN,
+  dsn: process.env.VUE_APP_SENTRY_DSN,
   integrations: [
     new Integrations.BrowserTracing({
       routingInstrumentation: Sentry.vueRouterInstrumentation(router),

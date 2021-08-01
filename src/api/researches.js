@@ -53,10 +53,3 @@ export function stats(id) {
     method: 'get'
   })
 }
-
-export function getError() {
-  return request({
-    url: '/researches/getError/',
-    method: 'get'
-  })
-}

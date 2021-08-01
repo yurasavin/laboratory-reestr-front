@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <button @click="throwError">Throw error</button>
     <el-row type="flex" class="row-bg">
       <new-research v-if="roles.includes('write')" ref="newResearch" class="top-row-btn" @saved="onSearch" @updated="onUpdate" />
       <el-badge :value="filtersCount" class="top-row-btn">
@@ -171,7 +172,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { export_as_xlsx, getList, getNextList, remove, getError } from '@/api/researches'
+import { export_as_xlsx, getList, getNextList, remove } from '@/api/researches'
 import NewResearch from '@/views/researches/components/NewResearch.vue'
 
 export default {
@@ -214,9 +215,11 @@ export default {
   },
   created() {
     this.fetchData()
-    getError()
   },
   methods: {
+    throwError() {
+      throw new Error('Sentry Error')
+    },
     fetchData() {
       if (this.fetchingRequest) {
         this.fetchingRequest.cancell()
