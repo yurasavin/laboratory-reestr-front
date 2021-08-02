@@ -35,25 +35,12 @@
           />
         </el-row>
 
-        <el-form-item label="Цель исследования" prop="reason" required>
-          <el-select
-            v-model="form.reason"
-            placeholder="Выберите цель исследования"
-            width="250"
-          >
-            <el-option label="Беременность" :value="1" />
-            <el-option label="Госпитализация" :value="2" />
-            <el-option label="Контакт" :value="3" />
-            <el-option label="Медицинский работник" :value="4" />
-            <el-option label="Новорожденный" :value="5" />
-            <el-option label="Острый бронхит" :value="6" />
-            <el-option label="Обследование" :value="7" />
-            <el-option label="Пневмония" :value="8" />
-            <el-option label="Прибывшие" :value="9" />
-            <el-option label="COVID-19" :value="10" />
-            <el-option label="Хронический фарингит" :value="11" />
-            <el-option label="Другое" :value="12" />
-          </el-select>
+        <el-form-item label="Цель исследования" prop="reason">
+          <new-research-reason-input
+            :reason="form.reason"
+            :reason-display="form.reason_display"
+            @input="onReasonInput"
+          />
         </el-form-item>
 
         <el-form-item label="Дата поступления">
@@ -178,9 +165,10 @@
 <script>
 import PatientChoose from '@/views/researches/components/PatientChoose.vue'
 import { create, patch } from '@/api/researches'
+import NewResearchReasonInput from './NewResearchReasonInput.vue'
 
 export default {
-  components: { PatientChoose },
+  components: { PatientChoose, NewResearchReasonInput },
   data() {
     return {
       visible: false,
@@ -200,7 +188,8 @@ export default {
           name: '',
           oms_id: ''
         },
-        reason: '',
+        reason: null,
+        reason_display: '',
         analys_taken_by: '',
         analys_transport_by: '',
         analys_transport_temp: '',
@@ -291,7 +280,8 @@ export default {
           name: '',
           oms_id: ''
         },
-        reason: '',
+        reason: null,
+        reason_display: '',
         analys_taken_by: '',
         analys_transport_by: '',
         analys_transport_temp: '',
@@ -322,6 +312,10 @@ export default {
         this.analysTransportDate = this.form.analys_transport_date.split('T')[0]
         this.analysTransportTime = this.form.analys_transport_date.split('T')[1].split('+')[0]
       }
+    },
+    onReasonInput({ value, id }) {
+      this.form.reason_display = value
+      this.form.reason = id
     }
   }
 }
