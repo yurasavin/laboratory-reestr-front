@@ -20,20 +20,13 @@
           <patient-choose ref="patient" :initial-data="form.patient" @complete="onPatientUpdate" />
         </el-form-item>
 
-        <el-row type="flex">
-          <el-form-item label="Направившая мед. организация" prop="requester.name" required>
-            <el-input
-              v-model="form.requester.name"
-              placeholder="Наименование"
-              class="requester-name"
-            />
-          </el-form-item>
-          <el-input
-            v-model="form.requester.oms_id"
-            placeholder="Код в ОМС"
-            class="requester-oms-id"
+        <el-form-item label="Направившая мед. организация" prop="requester.id">
+          <new-research-requester-input
+            :requester="form.requester.id"
+            :requester-display="form.requester.name"
+            @input="onRequesterInput"
           />
-        </el-row>
+        </el-form-item>
 
         <el-form-item label="Цель исследования" prop="reason">
           <new-research-reason-input
@@ -166,9 +159,10 @@
 import PatientChoose from '@/views/researches/components/PatientChoose.vue'
 import { create, patch } from '@/api/researches'
 import NewResearchReasonInput from './NewResearchReasonInput.vue'
+import NewResearchRequesterInput from './NewResearchRequesterInput.vue'
 
 export default {
-  components: { PatientChoose, NewResearchReasonInput },
+  components: { PatientChoose, NewResearchReasonInput, NewResearchRequesterInput },
   data() {
     return {
       visible: false,
@@ -185,8 +179,8 @@ export default {
         id: null,
         patient: {},
         requester: {
-          name: '',
-          oms_id: ''
+          id: null,
+          name: ''
         },
         reason: null,
         reason_display: '',
@@ -205,7 +199,7 @@ export default {
           { required: true, message: 'Выберите причину исследования', trigger: 'blur' }
         ],
         requester: {
-          name: [
+          id: [
             { required: true, message: 'Обязательное поле', trigger: 'blur' }
           ]
         },
@@ -277,8 +271,8 @@ export default {
         id: null,
         patient: {},
         requester: {
-          name: '',
-          oms_id: ''
+          id: null,
+          name: ''
         },
         reason: null,
         reason_display: '',
@@ -316,6 +310,10 @@ export default {
     onReasonInput({ value, id }) {
       this.form.reason_display = value
       this.form.reason = id
+    },
+    onRequesterInput({ value, id }) {
+      this.form.requester.name = value
+      this.form.requester.id = id
     }
   }
 }
@@ -342,15 +340,6 @@ export default {
 .el-input,
 .el-textarea {
   width: 50%;
-}
-
-.requester-name {
-  width: 300px;
-}
-
-.requester-oms-id {
-  width: 20%;
-  margin-left: 5px;
 }
 
 .header {

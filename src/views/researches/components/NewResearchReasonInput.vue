@@ -35,7 +35,7 @@ export default {
   methods: {
     reasonQuerySearch(query, callback) {
       query = query.toLowerCase()
-      const results = query ? this.reasons.filter(doc => doc.value.toLowerCase().startsWith(query)) : this.reasons
+      const results = query ? this.reasons.filter(res => res.value.toLowerCase().startsWith(query)) : this.reasons
       callback(results)
     },
     onInput(value) {
