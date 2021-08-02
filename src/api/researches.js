@@ -39,11 +39,12 @@ export function remove(data) {
   })
 }
 
-export function export_as_xlsx(id) {
+export function export_as_xlsx(id, data) {
   return request({
     url: `/researches/${id}/export/`,
-    method: 'get',
-    responseType: 'blob'
+    method: 'post',
+    responseType: 'blob',
+    data
   })
 }
 

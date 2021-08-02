@@ -153,30 +153,25 @@
           </el-button>
         </div>
       </template>
-
-      <!-- <el-table-column class-name="status-col" label="Status" width="110" align="center">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
-        <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
-        </template>
-      </el-table-column> -->
     </el-table>
+
+    <result-export-dialog
+      :visible="resultExportVisible"
+      :research-id="resultExportResearchId"
+      @close="resultExportVisible = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { export_as_xlsx, getList, getNextList, remove } from '@/api/researches'
+import { getList, getNextList, remove } from '@/api/researches'
 import NewResearch from '@/views/researches/components/NewResearch.vue'
+import ResultExportDialog from '@/views/researches/components/ResultExportDialog.vue'
 
 export default {
   name: 'Researches',
-  components: { NewResearch },
+  components: { NewResearch, ResultExportDialog },
   filters: {
     resultFilter(status) {
       const statusMap = {
@@ -199,7 +194,9 @@ export default {
       fetchingTimeout: null,
       searchNum: null,
       searchPatient: null,
-      searchRequester: null
+      searchRequester: null,
+      resultExportVisible: false,
+      resultExportResearchId: null
     }
   },
   computed: {
@@ -300,13 +297,8 @@ export default {
       })
     },
     exportResearch(id) {
-      export_as_xlsx(id).then((response) => {
-        const a = document.createElement('a')
-        const blobUrl = window.URL.createObjectURL(response.data)
-        a.href = blobUrl
-        a.download = 'Результат.xlsx'
-        a.click()
-      })
+      this.resultExportVisible = true
+      this.resultExportResearchId = id
     },
     onUpdate(newItem) {
       for (let index = 0; index < this.researchesList.length; index++) {
