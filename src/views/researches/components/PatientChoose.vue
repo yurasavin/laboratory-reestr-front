@@ -225,5 +225,6 @@ export default {
 
 .birthday {
   margin-bottom: 20px;
+  width: 400px;
 }
 </style>
