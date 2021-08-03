@@ -217,6 +217,7 @@ export default {
           const response = data.id ? patch(data) : create(data)
           response.then(response => {
             this.$message(data.id ? 'Исследование изменено' : 'Исследование добавлено')
+            this.onDrawerClose(() => {})
             this.visible = false
             if (data.id) {
               this.$emit('updated', response.data)

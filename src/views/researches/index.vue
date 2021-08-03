@@ -20,7 +20,7 @@
       ref="table"
       v-loading="initLoading"
       :data="researchesList"
-      height="90vh"
+      height="80vh"
       empty-text="Данные отсутствуют"
       element-loading-text="Загрузка"
       border
