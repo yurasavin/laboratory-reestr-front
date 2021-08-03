@@ -54,3 +54,12 @@ export function stats(id) {
     method: 'get'
   })
 }
+
+export function daily_export(data) {
+  return request({
+    url: `/researches/daily-export/`,
+    method: 'post',
+    responseType: 'blob',
+    data
+  })
+}

@@ -36,9 +36,11 @@
           />
         </el-form-item>
 
-        <el-form-item label="Дата поступления">
+        <el-divider />
+
+        <el-form-item label="Дата взятия образца" prop="analys_taken_date">
           <el-date-picker
-            v-model="collectDate"
+            v-model="form.analys_taken_date"
             type="date"
             placeholder="Выберите дату"
             format="dd.MM.yyyy"
@@ -46,43 +48,11 @@
             style="width: 100%"
             :picker-options="{ firstDayOfWeek: 1 }"
           />
-          <span class="line">-</span>
-          <el-time-picker
-            v-model="collectTime"
-            type="fixed-time"
-            value-format="HH:mm:ss"
-            placeholder="Выберите время"
-            style="width: 100%"
-          />
-        </el-form-item>
-
-        <el-form-item label="Дата взятия образца">
-          <el-date-picker
-            v-model="analysTakenDate"
-            type="date"
-            placeholder="Выберите дату"
-            format="dd.MM.yyyy"
-            value-format="yyyy-MM-dd"
-            style="width: 100%"
-            :picker-options="{ firstDayOfWeek: 1 }"
-          />
-          <span class="line">-</span>
-          <el-time-picker
-            v-model="analysTakenTime"
-            type="fixed-time"
-            value-format="HH:mm:ss"
-            placeholder="Выберите время"
-            style="width: 100%"
-          />
-        </el-form-item>
-
-        <el-form-item label="Лицо взявшее образец">
-          <el-input v-model="form.analys_taken_by" placeholder="Укажите ФИО" />
         </el-form-item>
 
         <el-form-item label="Дата транспортировки образца">
           <el-date-picker
-            v-model="analysTransportDate"
+            v-model="form.analys_transport_date"
             type="date"
             placeholder="Выберите дату"
             format="dd.MM.yyyy"
@@ -90,14 +60,24 @@
             style="width: 100%"
             :picker-options="{ firstDayOfWeek: 1 }"
           />
-          <span class="line">-</span>
-          <el-time-picker
-            v-model="analysTransportTime"
-            type="fixed-time"
-            value-format="HH:mm:ss"
-            placeholder="Выберите время"
+        </el-form-item>
+
+        <el-form-item label="Дата поступления" prop="collect_date">
+          <el-date-picker
+            v-model="form.collect_date"
+            type="date"
+            placeholder="Выберите дату"
+            format="dd.MM.yyyy"
+            value-format="yyyy-MM-dd"
             style="width: 100%"
+            :picker-options="{ firstDayOfWeek: 1 }"
           />
+        </el-form-item>
+
+        <el-divider />
+
+        <el-form-item label="Лицо взявшее образец">
+          <el-input v-model="form.analys_taken_by" placeholder="Укажите ФИО" />
         </el-form-item>
 
         <el-form-item label="Лицо транспортировавшее образец">
@@ -115,6 +95,8 @@
           />
         </el-form-item>
 
+        <el-divider />
+
         <el-form-item label="Результат">
           <el-select v-model="form.result" placeholder="Select">
             <el-option label="Не готов" :value="0" />
@@ -123,9 +105,9 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item v-if="form.result !== 0" label="Дата выдачи ответа">
+        <el-form-item v-if="form.result !== 0" label="Дата выдачи ответа" prop="result_date">
           <el-date-picker
-            v-model="resultDate"
+            v-model="form.result_date"
             type="date"
             placeholder="Выберите дату"
             format="dd.MM.yyyy"
@@ -133,13 +115,13 @@
             style="width: 100%"
             :picker-options="{ firstDayOfWeek: 1 }"
           />
-          <span class="line">-</span>
-          <el-time-picker
-            v-model="resultTime"
-            type="fixed-time"
-            value-format="HH:mm:ss"
-            placeholder="Выберите время"
-            style="width: 100%"
+        </el-form-item>
+
+        <el-form-item label="Номер за день" prop="daily_num">
+          <el-input-number
+            v-model="form.daily_num"
+            :controls="false"
+            placeholder="Укажите номер"
           />
         </el-form-item>
 
@@ -167,14 +149,6 @@ export default {
     return {
       visible: false,
       submitDisabled: false,
-      collectDate: null,
-      collectTime: null,
-      analysTransportDate: null,
-      analysTransportTime: null,
-      analysTakenDate: null,
-      analysTakenTime: null,
-      resultDate: null,
-      resultTime: null,
       form: {
         id: null,
         patient: {},
@@ -186,13 +160,14 @@ export default {
         reason_display: '',
         analys_taken_by: '',
         analys_transport_by: '',
-        analys_transport_temp: '',
-        result: 0,
+        analys_transport_temp: undefined,
+        result: -1,
+        daily_num: undefined,
         note: '',
-        collect_date: null,
         analys_taken_date: null,
+        collect_date: this.$moment().format('YYYY-MM-DD'),
         analys_transport_date: null,
-        result_date: null
+        result_date: this.$moment().format('YYYY-MM-DD')
       },
       rules: {
         reason: [
@@ -205,6 +180,18 @@ export default {
         },
         patient: [
           { required: true, trigger: 'blur', validator: this.patientValidator }
+        ],
+        collect_date: [
+          { required: true, message: 'Обязательное поле', trigger: 'blur' }
+        ],
+        analys_taken_date: [
+          { required: true, message: 'Обязательное поле', trigger: 'blur' }
+        ],
+        result_date: [
+          { required: true, message: 'Обязательное поле', trigger: 'blur' }
+        ],
+        daily_num: [
+          { required: true, message: 'Обязательное поле', trigger: 'blur' }
         ]
       }
     }
@@ -226,7 +213,7 @@ export default {
       this.submitDisabled = true
       this.$refs.form.validate((valid) => {
         if (valid) {
-          const data = this.processFormData(this.form)
+          const data = this.form
           const response = data.id ? patch(data) : create(data)
           response.then(response => {
             this.$message(data.id ? 'Исследование изменено' : 'Исследование добавлено')
@@ -244,14 +231,6 @@ export default {
         }
       })
     },
-    processFormData(formData) {
-      formData.collect_date = this.convertToDateTimeString(this.collectDate, this.collectTime)
-      formData.analys_taken_date = this.convertToDateTimeString(this.analysTakenDate, this.analysTakenTime)
-      formData.analys_transport_date = this.convertToDateTimeString(this.analysTransportDate, this.analysTransportTime)
-      formData.result_date = this.convertToDateTimeString(this.resultDate, this.resultTime)
-
-      return formData
-    },
     convertToDateTimeString(date, time) {
       if (!date) {
         return null
@@ -259,14 +238,6 @@ export default {
       return `${date}T${time || '00:00:00'}+03:00`
     },
     onDrawerClose(done) {
-      this.collectDate = null
-      this.collectTime = null
-      this.analysTransportDate = null
-      this.analysTransportTime = null
-      this.analysTakenDate = null
-      this.analysTakenTime = null
-      this.resultDate = null
-      this.resultTime = null
       this.form = {
         id: null,
         patient: {},
@@ -278,13 +249,14 @@ export default {
         reason_display: '',
         analys_taken_by: '',
         analys_transport_by: '',
-        analys_transport_temp: '',
-        result: 0,
+        analys_transport_temp: undefined,
+        result: -1,
+        daily_num: undefined,
         note: '',
-        collect_date: null,
         analys_taken_date: null,
+        collect_date: this.$moment().format('YYYY-MM-DD'),
         analys_transport_date: null,
-        result_date: null
+        result_date: this.$moment().format('YYYY-MM-DD')
       }
       done(true)
     },
@@ -292,28 +264,16 @@ export default {
       this.visible = true
       this.form = research
       this.form.patient.valid = true
-      if (this.form.collect_date) {
-        this.collectDate = this.form.collect_date.split('T')[0]
-        this.collectTime = this.form.collect_date.split('T')[1].split('+')[0]
-      }
-
-      if (this.form.analys_taken_date) {
-        this.analysTakenDate = this.form.analys_taken_date.split('T')[0]
-        this.analysTakenTime = this.form.analys_taken_date.split('T')[1].split('+')[0]
-      }
-
-      if (this.form.analys_transport_date) {
-        this.analysTransportDate = this.form.analys_transport_date.split('T')[0]
-        this.analysTransportTime = this.form.analys_transport_date.split('T')[1].split('+')[0]
-      }
     },
     onReasonInput({ value, id }) {
       this.form.reason_display = value
       this.form.reason = id
+      this.$refs.form.validateField('reason')
     },
     onRequesterInput({ value, id }) {
       this.form.requester.name = value
       this.form.requester.id = id
+      this.$refs.form.validateField('requester.id')
     }
   }
 }

@@ -56,10 +56,10 @@ export default {
   },
   data() {
     return {
-      dialogFormVisible: false,
       doctors: [
         { value: 'Полихова В.В.' },
-        { value: 'Таран Е.А.' }
+        { value: 'Сухорукова К.А.' },
+        { value: 'Макущенко С.В.' }
       ],
       form: {
         reagents: 'набор реагентов для выявления РНК коронавируса SARS-CoV-2 и подобных SARS-CoV методом обратной транскрипции и полимеразной цепной реакции в режиме реального времени (SARS-CoV-2/SARS-CoV)',

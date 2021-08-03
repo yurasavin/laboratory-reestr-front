@@ -13,15 +13,15 @@
       <el-form ref="form" :model="form" label-width="220px" :rules="rules">
         <el-row type="flex">
           <el-form-item label="ФИО" prop="last_name">
-            <el-input v-model="form.last_name" placeholder="Фамилия" />
+            <el-input v-model="form.last_name" placeholder="Фамилия" @input="form.last_name = $event.toUpperCase()" />
           </el-form-item>
 
           <el-form-item prop="first_name" label-width="0" class="name-middle">
-            <el-input v-model="form.first_name" placeholder="Имя" />
+            <el-input v-model="form.first_name" placeholder="Имя" @input="form.first_name = $event.toUpperCase()" />
           </el-form-item>
 
           <el-form-item prop="middle_name" label-width="0">
-            <el-input v-model="form.middle_name" placeholder="Отчество" />
+            <el-input v-model="form.middle_name" placeholder="Отчество" @input="form.middle_name = $event.toUpperCase()" />
           </el-form-item>
         </el-row>
 
@@ -177,6 +177,9 @@ export default {
         return callback(new Error('Введите корректную дату'))
       }
       callback()
+    },
+    onNameInput(value, fieldName) {
+      console.log(value, fieldName)
     }
   }
 }

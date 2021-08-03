@@ -2,9 +2,12 @@
   <div class="app-container">
     <el-row type="flex" class="row-bg">
       <new-research v-if="roles.includes('write')" ref="newResearch" class="top-row-btn" @saved="onSearch" @updated="onUpdate" />
+
       <el-badge :value="filtersCount" class="top-row-btn">
         <el-button type="primary" icon="el-icon-s-operation" @click="filtersShowing = !filtersShowing">Фильтры</el-button>
       </el-badge>
+
+      <el-button type="warning" icon="el-icon-s-order" class="top-row-btn" @click="dailytExportVisible = true">Сформировать реестр</el-button>
     </el-row>
 
     <div v-show="filtersShowing" class="filters-container">
@@ -160,6 +163,11 @@
       :research-id="resultExportResearchId"
       @close="resultExportVisible = false"
     />
+
+    <daily-export-dialog
+      :visible="dailytExportVisible"
+      @close="dailytExportVisible = false"
+    />
   </div>
 </template>
 
@@ -168,10 +176,11 @@ import { mapGetters } from 'vuex'
 import { getList, getNextList, remove } from '@/api/researches'
 import NewResearch from '@/views/researches/components/NewResearch.vue'
 import ResultExportDialog from '@/views/researches/components/ResultExportDialog.vue'
+import DailyExportDialog from './components/DailyExportDialog.vue'
 
 export default {
   name: 'Researches',
-  components: { NewResearch, ResultExportDialog },
+  components: { NewResearch, ResultExportDialog, DailyExportDialog },
   filters: {
     resultFilter(status) {
       const statusMap = {
@@ -196,7 +205,8 @@ export default {
       searchPatient: null,
       searchRequester: null,
       resultExportVisible: false,
-      resultExportResearchId: null
+      resultExportResearchId: null,
+      dailytExportVisible: false
     }
   },
   computed: {
